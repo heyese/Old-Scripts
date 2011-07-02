@@ -15,7 +15,7 @@ class App:
             current_row = getattr(self, row)
             current_row.pack(side=tk.TOP)
             for button in buttons:
-                setattr(self, row + button, tk.Button(current_row,height=5,width=5,font = ("Times", 20, "bold")))
+                setattr(self, row + button, tk.Button(current_row,height=5,width=5,font = ("Times", 20, "bold"),activeforeground='grey'))
                 current_button = getattr(self, row + button)
                 # The bit below is tricky.  If you say something like 'command = function(argument)', that's actually a call to that function.
                 # The usual thing is to do 'command = function', which is a reference to the function itself without calling it, but then
@@ -42,30 +42,38 @@ class App:
         for row in rows:
             possible_win = []
             for button in buttons:
-                possible_win.append(getattr(self, row + button).cget('text'))
+                possible_win.append(getattr(self, row + button))
             possible_wins.append(possible_win)
         # Add columns to possible wins
         for button in buttons:
             possible_win = []
             for row in rows:
-                possible_win.append(getattr(self, row + button).cget('text'))
+                possible_win.append(getattr(self, row + button))
             possible_wins.append(possible_win)
         # Add two diagonals to possible wins
         possible_win = []
         for (row, button) in zip(rows, buttons):
-            possible_win.append(getattr(self, row + button).cget('text'))
+            possible_win.append(getattr(self, row + button))
         possible_wins.append(possible_win)
         possible_win = []
         rows_reversed = rows
         rows_reversed.reverse()
         for (row, button) in zip(rows_reversed, buttons):
-            possible_win.append(getattr(self, row + button).cget('text'))
+            possible_win.append(getattr(self, row + button))
         possible_wins.append(possible_win)
         
         player1_win = [ 'X' for i in range(0,len(rows)) ]
         player2_win = ['O' for i in range(0,len(rows)) ]
-        if player1_win in possible_wins: print "Player1 has won"
-        if player2_win in possible_wins: print "Player2 has won"
+        winners = [ player1_win, player2_win ]
+        
+        # Go through each entry of possible_wins.
+        # If any are all Xs or all Os, make all those buttons flash
+        for line in possible_wins:
+            if [ line[i].cget('text') for i in range(0,len(line)) ] in winners:
+                print "We have a winner!"
+                for i in range(0, len(line)):
+                    line[i].configure(bg='green',fg='blue')
+
 
 def main():
     root = tk.Tk()
