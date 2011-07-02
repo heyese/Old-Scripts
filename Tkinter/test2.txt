@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+import Tkinter as tk
+
+class App:
+
+    def __init__(self, master):
+
+        frame1 = tk.Frame(master)
+        frame1.pack(side=tk.TOP)
+        frame2 = tk.Frame(master)
+        frame2.pack(side=tk.TOP)
+        #frame3 = tk.Frame(master)
+        #frame3.pack(side=tk.TOP)		
+
+        buttons = ['f1b1', 'f1b2', 'f1b3', 'f2b1', 'f2b2', 'f2b3]
+        for button in buttons:
+            setattr(self, button, tk.Button(frame1,height=10,width=10))
+            getattr(self, button).pack(side=tk.LEFT)
+
+    def change_colour(self):
+        print "bg is set to : ", self.f1b1.bg
+        self.f1b1.configure(bg="white")
+
+root = tk.Tk()
+
+app = App(root)
+
+root.mainloop()
