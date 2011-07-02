@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import Tkinter as tk
+import sys
 from functools import partial
 
 class App:
@@ -20,10 +21,10 @@ class App:
                 # The usual thing is to do 'command = function', which is a reference to the function itself without calling it, but then
                 # you have no arguments.  This is usually (it seems) overcome using lambda functions, but the 'partial' command from functools
                 # seems neat.  It returns a reference to a function that behaves like the given function called with the given parameters!
-                current_button.configure(command = partial(self.take_turn,current_button))
+                current_button.configure(command = partial(self.take_turn,current_button,rows,buttons))
                 current_button.pack(side=tk.LEFT)
 
-    def take_turn(self, current_button):
+    def take_turn(self, current_button, rows, buttons):
         if self.turn == 'player1': current_button.configure(text = 'X')
         else: current_button.configure(text = 'O')
         
@@ -66,10 +67,19 @@ class App:
         if player1_win in possible_wins: print "Player1 has won"
         if player2_win in possible_wins: print "Player2 has won"
 
-        
-root = tk.Tk()
-rows = ['r1', 'r2', 'r3', 'r4']
-buttons = ['b1', 'b2', 'b3', 'b5']
-app = App(root, rows, buttons)
+def main():
+    root = tk.Tk()
 
-root.mainloop()
+    try:
+        size = int(sys.argv[1])
+        rows = [ 'r' + str(i) for i in range(0, size) ]
+    except:
+        sys.exit('First argument should be size of grid')
+    buttons = [ 'b' + entry.lstrip('r') for entry in rows ]
+    app = App(root, rows, buttons)
+
+    root.mainloop()
+    return
+
+if __name__ == "__main__":
+    main()
