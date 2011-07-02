@@ -61,13 +61,15 @@ class App:
             possible_win.append(getattr(self, row + button).cget('text'))
         possible_wins.append(possible_win)
         
-        if ['X','X','X'] in possible_wins: print "Player1 has won"
-        if ['O','O','O'] in possible_wins: print "Player2 has won"
+        player1_win = [ 'X' for i in range(0,len(rows)) ]
+        player2_win = ['O' for i in range(0,len(rows)) ]
+        if player1_win in possible_wins: print "Player1 has won"
+        if player2_win in possible_wins: print "Player2 has won"
 
         
 root = tk.Tk()
-rows = ['r1', 'r2', 'r3']
-buttons = ['b1', 'b2', 'b3']
+rows = ['r1', 'r2', 'r3', 'r4']
+buttons = ['b1', 'b2', 'b3', 'b5']
 app = App(root, rows, buttons)
 
 root.mainloop()
